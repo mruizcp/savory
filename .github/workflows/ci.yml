@@ -1,0 +1,55 @@
+# Next.js + TypeScript + Vitest + Prisma + ESLint + build.
+# Valores de entorno del paso "Build" son placeholders (ver docs/ci.md).
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: web
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prisma generate
+        run: npx prisma generate
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm run test:run
+
+      - name: Build
+        env:
+          # next build corre como producción: getAuthSecret() exige AUTH_SECRET.
+          AUTH_SECRET: ci-placeholder-auth-secret-min-32-chars-build-only
+          AUTH_URL: http://127.0.0.1:3000
+          DATABASE_URL: sqlserver://127.0.0.1:1433;database=ci;user=ci;password=ci;encrypt=true;trustServerCertificate=true
+          OPENAI_API_KEY: sk-ci-dummy-build-only-not-used
+        run: npm run build

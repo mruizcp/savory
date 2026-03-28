@@ -1,0 +1,2 @@
+/** Recetas favoritas. */
+export {};

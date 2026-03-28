@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Design system — tema cálido “cocina” (startup / producto).
+ * Dark: clase .dark (next-themes).
+ */
+:root {
+  --background: #faf7f3;
+  --foreground: #1c1917;
+  --card: #ffffff;
+  --card-foreground: #1c1917;
+  --muted: #f3ece6;
+  --muted-foreground: #78716c;
+  --primary: #c2410c;
+  --primary-foreground: #fffbeb;
+  --secondary: #e7e0d8;
+  --secondary-foreground: #292524;
+  --accent: #c2410c;
+  --accent-foreground: #fffbeb;
+  --destructive: #b91c1c;
+  --destructive-foreground: #fff1f2;
+  --border: #e8e0d8;
+  --input: #e8e0d8;
+  --ring: #ea580c;
+  --radius: 1rem;
+  --radius-sm: 0.625rem;
+  --radius-lg: 1.25rem;
+  /* Espaciado consistente (secciones / stacks) */
+  --space-section: 2rem;
+  --space-stack: 1.25rem;
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.dark {
+  --background: #141210;
+  --foreground: #faf7f3;
+  --card: #1c1917;
+  --card-foreground: #faf7f3;
+  --muted: #292524;
+  --muted-foreground: #a8a29e;
+  --primary: #fb923c;
+  --primary-foreground: #1c1917;
+  --secondary: #3f3f3a;
+  --secondary-foreground: #faf7f3;
+  --accent: #fb923c;
+  --accent-foreground: #1c1917;
+  --destructive: #f87171;
+  --destructive-foreground: #1c1917;
+  --border: #3f3f3a;
+  --input: #3f3f3a;
+  --ring: #fb923c;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply min-h-full bg-background text-foreground antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+}
+
+@layer utilities {
+  .transition-interactive {
+    transition-property: transform, box-shadow, border-color, background-color,
+      color, opacity;
+    transition-duration: var(--transition-base);
+    transition-timing-function: var(--ease-out);
+  }
+
+  .motion-safe\:animate-fade-in {
+    animation: fade-in 0.45s var(--ease-out) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-safe\:animate-fade-in {
+      animation: none;
+    }
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

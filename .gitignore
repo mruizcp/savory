@@ -1,0 +1,4 @@
+# Raíz del monorepo (web/ tiene su propio .gitignore)
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,17 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+ALTER TABLE [dbo].[User] ADD [passwordHash] NVARCHAR(255) NULL;
+
+DROP INDEX [User_email_idx] ON [dbo].[User];
+
+CREATE UNIQUE NONCLUSTERED INDEX [User_email_key] ON [dbo].[User]([email]);
+
+COMMIT;
+
+END TRY
+BEGIN CATCH
+  IF @@TRANCOUNT > 0 ROLLBACK TRAN;
+  THROW;
+END CATCH
